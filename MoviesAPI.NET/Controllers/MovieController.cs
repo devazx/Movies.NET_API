@@ -8,11 +8,13 @@ namespace MoviesAPI.NET.Controllers
     public class MovieController : ControllerBase
     {
         private static List<Movie> movies = new List<Movie>();
+        private static int id = 0;
 
         [HttpPost]
         public void AddMovie([FromBody]Movie movie)
         {            
             {
+                movie.Id = id++;
                 movies.Add(movie);
                 Console.WriteLine(movie.Title);
                 Console.WriteLine(movie.Duration);
@@ -24,6 +26,13 @@ namespace MoviesAPI.NET.Controllers
         public IEnumerable<Movie> ReadMovies()
         {
             return movies;
+        }
+
+        [HttpGet("{id}")]
+        public Movie? ReadMovieId(int id)
+        {
+            return movies
+                .FirstOrDefault(movie => movie.Id == id);
         }
 
     }
