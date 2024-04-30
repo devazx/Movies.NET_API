@@ -11,10 +11,19 @@ namespace MoviesAPI.NET.Controllers
 
         [HttpPost]
         public void AddMovie([FromBody]Movie movie)
+        {            
+            {
+                movies.Add(movie);
+                Console.WriteLine(movie.Title);
+                Console.WriteLine(movie.Duration);
+            }
+           
+        }
+
+        [HttpGet]
+        public IEnumerable<Movie> ReadMovies()
         {
-            movies.Add(movie);
-            Console.WriteLine(movie.Title);
-            Console.WriteLine(movie.Duration);
+            return movies;
         }
 
     }
