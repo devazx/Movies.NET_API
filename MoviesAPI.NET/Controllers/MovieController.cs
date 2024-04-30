@@ -23,9 +23,11 @@ namespace MoviesAPI.NET.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Movie> ReadMovies()
+        public IEnumerable<Movie> ReadMovies([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
-            return movies;
+            return movies
+                .Skip(skip)
+                .Take(take);
         }
 
         [HttpGet("{id}")]
