@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MoviesAPI.NET.Data;
+using MoviesAPI.NET.Dtos;
 using MoviesAPI.NET.Models;
+using System.Reflection;
 
 namespace MoviesAPI.NET.Controllers
 {
@@ -9,6 +12,7 @@ namespace MoviesAPI.NET.Controllers
     public class MovieController : ControllerBase
     {
         private MovieContext _context;
+        
 
         public MovieController(MovieContext context)
         {
@@ -16,16 +20,19 @@ namespace MoviesAPI.NET.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie([FromBody]Movie movie)
-        {            
+        public IActionResult AddMovie([FromBody] CreateMoviesDto movieDto)
+        {
+            Movie movie = new Movie
             {
-                _context.Movies.Add(movie);
-                _context.SaveChanges();
-                return CreatedAtAction(nameof(ReadMovieId), 
-                    new {id = movie.Id},
-                    movie);
-            }
-           
+                Title = movieDto.Title,
+                Category = movieDto.Category,
+                Duration = movieDto.Duration
+            };
+            _context.Movies.Add(movie);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(ReadMovieId),
+                new { id = movie.Id },
+                movie);
         }
 
         [HttpGet]
